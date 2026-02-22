@@ -6,10 +6,10 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="theme-color" content="#6366f1">
-    <title>Arbeitszeiterfassung Pro</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js "></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js "></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css " rel="stylesheet">
+    <title>Arbeitszeit Tracker Pro</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
         :root {
             --primary: #6366f1;
@@ -1241,7 +1241,7 @@
             <div class="auth-box">
                 <div class="auth-logo">
                     <i class="fas fa-clock"></i>
-                    <h1>Arbeitszeiterfassung</h1>
+                    <h1>Arbeitszeit Tracker</h1>
                 </div>
 
                 <div class="auth-tabs">
@@ -1340,7 +1340,7 @@
         <!-- Main App -->
         <div id="mainApp" class="hidden">
             <header class="app-header">
-                <h1><i class="fas fa-clock"></i> <span id="headerTitle">Arbeitszeit</span></h1>
+                <h1><i class="fas fa-clock"></i> <span id="headerTitle">Arbeitszeit Tracker</span></h1>
                 <div class="header-actions">
                     <button class="header-btn" onclick="toggleTheme()" title="Design wechseln">
                         <i class="fas fa-moon" id="themeIcon"></i>
@@ -1379,7 +1379,7 @@
                             <div class="stat-card">
                                 <div class="stat-icon green"><i class="fas fa-euro-sign"></i></div>
                                 <div class="stat-value" id="totalPayroll">€0</div>
-                                <div class="stat-label">Gesamtlohn</div>
+                                <div class="stat-label">Gesamtkosten</div>
                             </div>
                             <div class="stat-card">
                                 <div class="stat-icon orange"><i class="fas fa-calendar"></i></div>
@@ -1400,18 +1400,37 @@
                         </div>
                     </div>
 
+                    <!-- Admin Security Section - Only for Admin -->
+                    <div class="card" style="border-color: var(--admin); background: rgba(139, 92, 246, 0.03);">
+                        <h2 class="card-title"><i class="fas fa-lock"></i> Admin-Sicherheit</h2>
+                        <div class="info-box" style="background: rgba(139, 92, 246, 0.08); border-left-color: var(--admin);">
+                            <strong>Admin-Passwort ändern</strong>
+                            Aktualisieren Sie das Master-Passwort für den Zugriff auf das Admin-Dashboard.
+                        </div>
+                        <div class="input-group" style="margin-bottom: 12px;">
+                            <label>Neues Admin-Passwort</label>
+                            <div class="input-wrapper">
+                                <i class="fas fa-key"></i>
+                                <input type="password" id="adminPasswordDashboard" placeholder="Neues Passwort eingeben">
+                            </div>
+                        </div>
+                        <button class="btn btn-admin" onclick="changeAdminPasswordFromDashboard()">
+                            <i class="fas fa-save"></i> Admin-Passwort aktualisieren
+                        </button>
+                    </div>
+
                     <div class="card">
-                        <h2 class="card-title"><i class="fas fa-sync"></i> Synchronisation</h2>
+                        <h2 class="card-title"><i class="fas fa-sync"></i> Cloud-Synchronisation</h2>
                         <div class="info-box">
                             <strong>Cloud-Sync aktiv</strong>
-                            Daten werden automatisch mit JSONBin.io synchronisiert. Verfügbar auf allen Geräten.
+                            Daten werden automatisch mit JSONBin.io synchronisiert. Auf allen Geräten verfügbar.
                         </div>
                         <div class="btn-row">
                             <button class="btn btn-secondary" onclick="forceSync()">
                                 <i class="fas fa-sync-alt"></i> Jetzt synchronisieren
                             </button>
                             <button class="btn btn-secondary" onclick="exportAllData()">
-                                <i class="fas fa-download"></i> Backup erstellen
+                                <i class="fas fa-download"></i> Backup
                             </button>
                         </div>
                         <input type="file" id="importFile" class="hidden" accept=".json" onchange="importData(this)">
@@ -1444,7 +1463,7 @@
                             <div class="stat-card">
                                 <div class="stat-icon pink"><i class="fas fa-wallet"></i></div>
                                 <div class="stat-value" id="estimatedSalary">€0</div>
-                                <div class="stat-label">Geschätzter Lohn</div>
+                                <div class="stat-label">Gesch. Gehalt</div>
                             </div>
                         </div>
 
@@ -1454,7 +1473,7 @@
                         </div>
 
                         <div class="info-box">
-                            <strong>9h Standard | Mehrere Tage auswählen zum Kopieren</strong>
+                            <strong>9h Standard | Mehrere Tage zum Kopieren auswählen</strong>
                             Checkbox antippen um Tage zu wählen, dann Quelltag zum Kopieren auswählen.
                         </div>
 
@@ -1594,7 +1613,7 @@
                 </div>
 
                 <div class="input-group">
-                    <label>PIN zurücksetzen (leer lassen zum Beibehalten)</label>
+                    <label>PIN zurücksetzen (leer lassen um aktuelle zu behalten)</label>
                     <div class="input-wrapper">
                         <i class="fas fa-lock"></i>
                         <input type="password" id="editEmpPin" placeholder="Neue 4-stellige PIN" maxlength="4" inputmode="numeric">
@@ -1650,7 +1669,8 @@
                     </button>
                 </div>
 
-                <div class="input-group" style="margin-bottom: 16px;">
+                <!-- Admin Password Section - Hidden for non-admins -->
+                <div id="adminOnlySettings" class="input-group" style="margin-bottom: 16px; display: none;">
                     <label>Admin-Passwort ändern</label>
                     <div class="input-wrapper">
                         <i class="fas fa-lock"></i>
@@ -1685,7 +1705,7 @@
         <div id="pdfTemplate" class="pdf-container">
             <div class="pdf-header">
                 <h1>Arbeitszeitbericht</h1>
-                <p style="color: #666; margin-top: 5px;">Erstellt: <span id="pdfDate"></span> | 24h-Format | 30min Pause | 9h Standard</p>
+                <p style="color: #666; margin-top: 5px;">Erstellt: <span id="pdfDate"></span> | 24h Format | 30min Pause | 9h Standard</p>
             </div>
             <div class="pdf-info">
                 <span><strong>Mitarbeiter:</strong> <span id="pdfEmployeeName"></span></span>
@@ -1708,14 +1728,14 @@
                 <tbody id="pdfTableBody"></tbody>
             </table>
             <div class="pdf-summary">
-                <div><strong>Gesamt:</strong> <span id="pdfTotalHours">0</span>h</div>
+                <div><strong>Gesamt:</strong> <span id="pdfTotalHours">0</span> Std</div>
                 <div><strong>Tage:</strong> <span id="pdfWorkingDays">0</span></div>
-                <div><strong>Überstunden:</strong> <span id="pdfOvertime">0</span>h</div>
-                <div><strong>Lohn:</strong> <span id="pdfTotalSalary">€0</span></div>
+                <div><strong>Überstunden:</strong> <span id="pdfOvertime">0</span> Std</div>
+                <div><strong>Gehalt:</strong> <span id="pdfTotalSalary">€0</span></div>
             </div>
             <div class="pdf-footer">
                 <div class="pdf-signature">Mitarbeiter</div>
-                <div class="pdf-signature">Vorgesetzter</div>
+                <div class="pdf-signature">Manager</div>
             </div>
         </div>
 
@@ -1744,10 +1764,20 @@
         const STANDARD_HOURS = 9;
         const DEFAULT_ADMIN_PASSWORD = 'admin123';
 
+        // German month names for PDF
+        const germanMonths = [
+            'Januar', 'Februar', 'März', 'April', 'Mai', 'Juni',
+            'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'
+        ];
+
+        // German day names
+        const germanDays = ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'];
+        const germanDaysLong = ['Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag'];
+
         // Load from Cloud (JSONBin)
         async function loadData() {
             try {
-                showToast('☁️ Lade Daten...');
+                showToast('☁️ Daten werden geladen...');
                 const response = await fetch(JSONBIN_URL + '/latest', {
                     headers: { 'X-Master-Key': JSONBIN_KEY }
                 });
@@ -1816,7 +1846,7 @@
             } catch(e) {
                 console.error('Cloud save failed', e);
                 updateSyncStatus(false);
-                showToast('❌ Offline - nur lokal gespeichert');
+                showToast('❌ Offline - lokal gespeichert');
                 localStorage.setItem('workTracker_backup', JSON.stringify({employees, currency, autoSave}));
             }
         }
@@ -1982,7 +2012,7 @@
                 document.getElementById('mainApp').classList.remove('hidden');
                 initializeEmployeeView();
             } else {
-                document.getElementById('pinError').textContent = 'Falsche PIN. Erneut versuchen.';
+                document.getElementById('pinError').textContent = 'Falsche PIN. Bitte erneut versuchen.';
                 currentPin = '';
                 updatePinDisplay();
             }
@@ -2004,10 +2034,33 @@
             }
         }
 
+        // Admin password change from Dashboard (Admin only)
+        function changeAdminPasswordFromDashboard() {
+            if (!isAdmin) {
+                showToast('❌ Nur für Admin');
+                return;
+            }
+            
+            const newPass = document.getElementById('adminPasswordDashboard').value;
+            if (!newPass) {
+                showToast('❌ Bitte neues Passwort eingeben');
+                return;
+            }
+            localStorage.setItem('adminPassword', newPass);
+            document.getElementById('adminPasswordDashboard').value = '';
+            showToast('✅ Admin-Passwort aktualisiert');
+        }
+
+        // Admin password change from Settings (Admin only)
         function changeAdminPassword() {
+            if (!isAdmin) {
+                showToast('❌ Nur für Admin');
+                return;
+            }
+            
             const newPass = document.getElementById('newAdminPassword').value;
             if (!newPass) {
-                showToast('❌ Neues Passwort eingeben');
+                showToast('❌ Bitte neues Passwort eingeben');
                 return;
             }
             localStorage.setItem('adminPassword', newPass);
@@ -2017,7 +2070,7 @@
 
         // View Initialization
         function initializeEmployeeView() {
-            document.getElementById('headerTitle').textContent = 'Arbeitszeit';
+            document.getElementById('headerTitle').textContent = 'Arbeitszeit Tracker';
             document.getElementById('adminDashboard').classList.add('hidden');
             document.getElementById('employeeTracker').classList.remove('hidden');
             document.getElementById('trackerTitle').textContent = currentUser.name;
@@ -2084,7 +2137,7 @@
                         <div class="employee-info" style="flex: 1;">
                             <h3>${emp.name} <span style="font-size: 0.75rem; color: var(--text-light); font-weight: 400;">(${formatMonth(emp.month)})</span></h3>
                             <div class="employee-meta">
-                                <span><i class="fas fa-clock"></i> ${stats.hours}h</span>
+                                <span><i class="fas fa-clock"></i> ${stats.hours} Std</span>
                                 <span><i class="fas fa-calendar-check"></i> ${stats.days} Tage</span>
                                 <span><i class="fas fa-money-bill"></i> ${currency}${stats.pay}</span>
                             </div>
@@ -2261,7 +2314,7 @@
                 <div class="stat-card">
                     <div class="stat-icon pink"><i class="fas fa-money-bill"></i></div>
                     <div class="stat-value">${currency}${stats.pay}</div>
-                    <div class="stat-label">Lohn</div>
+                    <div class="stat-label">Gehalt</div>
                 </div>
                 <div class="stat-card">
                     <div class="stat-icon orange"><i class="fas fa-percentage"></i></div>
@@ -2280,17 +2333,18 @@
                 if (data?.checkIn && data?.checkOut) {
                     const hrs = calculateHours(data.checkIn, data.checkOut);
                     const date = new Date(year, month - 1, day);
+                    const dayName = germanDays[date.getDay()];
                     html += `
                         <div style="display: flex; justify-content: space-between; padding: 10px; background: var(--bg); border-radius: 8px; margin-bottom: 8px;">
                             <div>
-                                <strong>${day}. ${date.toLocaleDateString('de-DE', {weekday:'short'})}</strong>
+                                <strong>${day}. ${dayName}</strong>
                                 <div style="font-size: 0.85rem; color: var(--text-light);">
                                     ${data.checkIn || '--:--'} - ${data.checkOut || '--:--'}
                                 </div>
                             </div>
                             <div style="text-align: right;">
                                 <div style="font-weight: 700; color: ${parseFloat(hrs) > 9 ? 'var(--overtime)' : 'var(--success)'};">
-                                    ${hrs}h
+                                    ${hrs} Std
                                 </div>
                                 ${data.notes ? `<div style="font-size: 0.75rem; color: var(--text-light);">${data.notes}</div>` : ''}
                             </div>
@@ -2332,7 +2386,7 @@
                 const isSelected = selectedDays.has(key);
                 
                 const date = new Date(year, month - 1, day);
-                const dayName = date.toLocaleDateString('de-DE', { weekday: 'narrow' });
+                const dayName = germanDays[date.getDay()];
                 
                 html += `
                     <button class="day-select-btn ${hasData ? 'has-data' : ''} ${isSelected ? 'selected' : ''}" 
@@ -2383,7 +2437,8 @@
                 const dayData = currentUser.workData[key];
                 if (dayData?.checkIn && dayData?.checkOut) {
                     const date = new Date(year, month - 1, day);
-                    select.innerHTML += `<option value="${key}">${day}. ${date.toLocaleDateString('de-DE', {weekday:'short'})} (${dayData.checkIn}-${dayData.checkOut})</option>`;
+                    const dayName = germanDays[date.getDay()];
+                    select.innerHTML += `<option value="${key}">${day}. ${dayName} (${dayData.checkIn}-${dayData.checkOut})</option>`;
                 }
             }
             select.value = currentVal;
@@ -2466,6 +2521,7 @@
                 const hours = calculateHours(dayData.checkIn, dayData.checkOut);
                 const isOvertime = hours && parseFloat(hours) > STANDARD_HOURS;
                 const isSelected = selectedDays.has(key);
+                const dayName = germanDays[date.getDay()];
 
                 html += `
                     <div class="day-card ${isWeekend ? 'weekend' : ''} ${isToday ? 'today' : ''} ${isSelected ? 'selected-for-copy' : ''}">
@@ -2475,11 +2531,11 @@
                                     ${isSelected ? '<i class="fas fa-check"></i>' : ''}
                                 </div>
                                 <div class="day-info">
-                                    <h3>${day}. ${date.toLocaleDateString('de-DE', { weekday: 'short' })}</h3>
-                                    <p>${date.toLocaleDateString('de-DE', { month: 'short' })}</p>
+                                    <h3>${day}. ${dayName}</h3>
+                                    <p>${germanMonths[month-1]}</p>
                                 </div>
                             </div>
-                            ${hours ? `<div class="hours-pill ${isOvertime ? 'overtime' : ''}">${parseFloat(hours).toFixed(1)}h</div>` : ''}
+                            ${hours ? `<div class="hours-pill ${isOvertime ? 'overtime' : ''}">${parseFloat(hours).toFixed(1)} Std</div>` : ''}
                         </div>
                         
                         <div class="time-inputs">
@@ -2531,7 +2587,7 @@
                 if (hrs) {
                     const num = parseFloat(hrs);
                     if (num > STANDARD_HOURS) {
-                        showToast(`🔥 ${num.toFixed(1)}h (ÜS: ${(num - STANDARD_HOURS).toFixed(1)}h)`);
+                        showToast(`🔥 ${num.toFixed(1)} Std (ÜS: ${(num - STANDARD_HOURS).toFixed(1)} Std)`);
                     } else {
                         showToast(`✅ ${num.toFixed(1)} Stunden`);
                     }
@@ -2575,7 +2631,7 @@
             const otAlert = document.getElementById('overtimeAlert');
             if (overtime > 0) {
                 otAlert.style.display = 'flex';
-                document.getElementById('overtimeText').textContent = `${overtime.toFixed(1)}h über ${STANDARD_HOURS}h-Limit`;
+                document.getElementById('overtimeText').textContent = `${overtime.toFixed(1)} Std über 9h-Limit`;
             } else {
                 otAlert.style.display = 'none';
             }
@@ -2604,7 +2660,7 @@
 
         function formatMonth(m) {
             const [y, month] = m.split('-');
-            return new Date(y, month - 1, 1).toLocaleDateString('de-DE', { month: 'long', year: 'numeric' });
+            return `${germanMonths[month-1]} ${y}`;
         }
 
         function showToast(msg) {
@@ -2617,6 +2673,12 @@
         // Settings
         function showSettings() {
             document.getElementById('settingsModal').classList.remove('hidden');
+            
+            // Show/hide admin password section based on admin status
+            const adminSection = document.getElementById('adminOnlySettings');
+            if (adminSection) {
+                adminSection.style.display = isAdmin ? 'block' : 'none';
+            }
         }
 
         function closeSettings() {
@@ -2681,10 +2743,10 @@
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = `arbeitszeiterfassung-sicherung-${new Date().toISOString().split('T')[0]}.json`;
+            a.download = `arbeitszeit-backup-${new Date().toISOString().split('T')[0]}.json`;
             a.click();
             URL.revokeObjectURL(url);
-            showToast('✅ Sicherung exportiert');
+            showToast('✅ Backup exportiert');
         }
 
         function importData(input) {
@@ -2695,11 +2757,11 @@
             reader.onload = async (e) => {
                 try {
                     const data = JSON.parse(e.target.result);
-                    if (confirm('Sicherung wiederherstellen? Dies ersetzt ALLE aktuellen Daten.')) {
+                    if (confirm('Backup wiederherstellen? Dies ersetzt ALLE aktuellen Daten.')) {
                         employees = data.employees || [];
                         currency = data.currency || '€';
                         await saveData();
-                        showToast('✅ Sicherung wiederhergestellt');
+                        showToast('✅ Backup wiederhergestellt');
                         if (isAdmin) {
                             updateAdminStats();
                             renderAdminEmployeeList();
@@ -2720,13 +2782,12 @@
             
             showToast('📄 PDF wird erstellt...');
 
-            document.getElementById('pdfDate').textContent = new Date().toLocaleDateString('de-DE', { 
-                year: 'numeric', month: 'long', day: 'numeric' 
-            });
+            const now = new Date();
+            document.getElementById('pdfDate').textContent = `${now.getDate()}. ${germanMonths[now.getMonth()]} ${now.getFullYear()}`;
             document.getElementById('pdfEmployeeName').textContent = emp.name;
             document.getElementById('pdfMonth').textContent = formatMonth(emp.month);
             document.getElementById('pdfRate').textContent = emp.hourlyRate ? 
-                `${currency}${emp.hourlyRate}/h` : 'Nicht gesetzt';
+                `${currency}${emp.hourlyRate}/Std` : 'Nicht gesetzt';
 
             const [year, month] = emp.month.split('-').map(Number);
             const daysInMonth = new Date(year, month, 0).getDate();
@@ -2742,6 +2803,7 @@
                     if (hrs > 0) {
                         const date = new Date(year, month - 1, d);
                         const dayOvertime = hrs > STANDARD_HOURS ? hrs - STANDARD_HOURS : 0;
+                        const dayName = germanDays[date.getDay()];
                         
                         const checkInDisplay = data.checkIn || '--:--';
                         const checkOutDisplay = data.checkOut || '--:--';
@@ -2749,7 +2811,7 @@
                         rows += `
                             <tr style="${dayOvertime > 0 ? 'background: #fff7ed;' : ''}">
                                 <td>${key}</td>
-                                <td>${date.toLocaleDateString('de-DE', {weekday:'short'})}</td>
+                                <td>${dayName}</td>
                                 <td><strong>${checkInDisplay}</strong></td>
                                 <td><strong>${checkOutDisplay}</strong></td>
                                 <td>30min</td>
